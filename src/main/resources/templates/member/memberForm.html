@@ -9,38 +9,104 @@
         .fieldError {
             color: #bd2130;
         }
+
     </style>
 </th:block>
 
+<!--<th:block layout:fragment="css">-->
+<!--/* 비밀번호 확인 일치 유효성검사 */-->
+<!--#pwck_input_re_1,#pwck_input_re_2{-->
+<!--       hidden:true;-->
+<!--}-->
+
+<!--    </style>-->
+<!--</th:block>-->
+
 
 <!-- 사용자 스크립트 추가 -->
-<th:block layout:fragment="script">
+<!--<th:block layout:fragment="script">-->
 
-    <script th:inline="javascript">
-        $(document).ready(function(){
+<!--    <script th:inline="javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            var errorMessage = [[${errorMessage}]];-->
+<!--            if(errorMessage != null){-->
+<!--                alert(errorMessage);-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+
+<!--    <script th:inline="javascript">-->
+<!--    function test() {-->
+<!--      var p1 = document.getElementById('pw1').value;-->
+<!--      var p2 = document.getElementById('pw2').value;-->
+<!--      if( p1 != p2 ) {-->
+<!--        alert("비밀번호가 일치 하지 않습니다");-->
+<!--        return false;-->
+<!--      } else{-->
+<!--        alert("비밀번호가 일치합니다");-->
+<!--        return true;-->
+<!--      }-->
+
+<!--    }-->
+<!--  </script>-->
+
+<!--    <script th:inline="javascript">-->
+
+
+
+<!--/* 비밀번호 확인 일치 유효성 검사 */-->
+
+<!--$('#pwck').on("propertychange change keyup paste input", function(){-->
+
+<!--    var pw = $('#pw').val();-->
+<!--    var pwck = $('#pwck').val();-->
+<!--    var pwckcorCheck="";-->
+<!--    if(pw==pwck){-->
+
+<!--        $('#pwck_input_re_1').css('display', 'block');-->
+<!--        $('#pwck_input_re_1').css('color', 'blue');-->
+<!--        $('#pwck_input_re_2').css('display', 'none');-->
+<!--        pwckcorCheck = true;-->
+<!--    }else{-->
+<!--        $('#pwck_input_re_1').css('display', 'none');-->
+<!--        $('#pwck_input_re_2').css('display', 'block');-->
+<!--        $('#pwck_input_re_2').css('color', 'red');-->
+<!--        pwckcorCheck = false;-->
+<!--    }-->
+
+<!--});-->
+
+<!--    </script>-->
+<!--</th:block>-->
+
+        <script th:inline="javascript">
+          $(document).ready(function(){
             var errorMessage = [[${errorMessage}]];
             if(errorMessage != null){
                 alert(errorMessage);
-            }
+
+	/* 자바 스크립트 함수 선언(비밀번호 확인) */
+
+
+	/* 비밀번호, 비밀번호 확인 입력창에 입력된 값을 비교해서 같다면 비밀번호 일치, 그렇지 않으면 불일치 라는 텍스트 출력.*/
+	/* document : 현재 문서를 의미함. 작성되고 있는 문서를 뜻함. */
+	/* getElementByID('아이디') : 아이디에 적힌 값을 가진 id의 value를 get을 해서 password 변수 넣기 */
+		var password = document.getElementById('password');					//비밀번호
+		var passwordConfirm = document.getElementById('passwordConfirm');	//비밀번호 확인 값
+		var confirmMsg = document.getElementById('confirmMsg');				//확인 메세지
+		var correctColor = "#00ff00";	//맞았을 때 출력되는 색깔.
+		var wrongColor ="#ff0000";	//틀렸을 때 출력되는 색깔
+
+		if(password.value == passwordConfirm.value){//password 변수의 값과 passwordConfirm 변수의 값과 동일하다.
+			confirmMsg.style.color = correctColor;/* span 태그의 ID(confirmMsg) 사용  */
+			confirmMsg.innerHTML ="비밀번호 일치";/* innerHTML : HTML 내부에 추가적인 내용을 넣을 때 사용하는 것. */
+		}else{
+			confirmMsg.style.color = wrongColor;
+			confirmMsg.innerHTML ="비밀번호 불일치";
+		}
+	 }
         });
-    </script>
-
-    <script th:inline="javascript">
-    function test() {
-      var p1 = document.getElementById('pw1').value;
-      var p2 = document.getElementById('pw2').value;
-      if( p1 != p2 ) {
-        alert("비밀번호가 일치 하지 않습니다");
-        return false;
-      } else{
-        alert("비밀번호가 일치합니다");
-        return true;
-      }
-
-    }
-  </script>
-
-</th:block>
+</script>
 
 <div layout:fragment="content">
 
@@ -67,16 +133,19 @@
 <!--            <input type="hidden" id="certificationYN" value="false">-->
         </div>
         <div class="form-group">
-            <label th:for="password">비밀번호</label>
-            <input id="pw1" type="password" th:field="*{password}" class="form-control" placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.">
+            <label class="pwchk" th:for="password">비밀번호</label>
+            <input id="password" type="password" th:field="*{password}" class="form-control " placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.">
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
-            <input type="button" onclick="test()" value="비밀번호 확인"><br>
+<!--            <input type="button" th:onclick="test()" value="비밀번호 확인" required><br>-->
         </div>
         <div class="form-group">
-            <label th:for="password">비밀번호 확인</label>
-            <input id="pw2" type="password"  class="form-control" placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.">
-
+            <label class="pwchk" th:for="password" >비밀번호 확인</label>
+            <input id="passwordConfirm"  type="password"  class="form-control " placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요." >
+            <span id ="confirmMsg"></span>
+<!--            <span id="pwck_input_re_1" style="display:none" >비밀번호가 일치합니다.</span>-->
+<!--            <span id="pwck_input_re_2" style="display:none" >비밀번호가 일치하지 않습니다.</span>-->
         </div>
+
         <div class="form-group">
             <label th:for="address">주소</label>
             <input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요">
