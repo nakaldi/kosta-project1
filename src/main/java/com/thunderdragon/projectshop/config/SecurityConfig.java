@@ -1,8 +1,7 @@
 package com.thunderdragon.projectshop.config;
 
-
-import com.thunderdragon.projectshop.config.CustomAuthenticationEntryPoint;
 import com.thunderdragon.projectshop.service.MemberService;
+import com.thunderdragon.thunderdragon.projectshop.config.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,42 +22,44 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     MemberService memberService;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberService)
-                .passwordEncoder(passwordEncoder());
+            .passwordEncoder(passwordEncoder());
     }
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
-                .loginPage("/members/login")
-                .defaultSuccessUrl("/")
-                .usernameParameter("email")
-                .failureUrl("/members/login/error")
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher
-                        ("/members/logout"))
-                .logoutSuccessUrl("/")
+            .loginPage("/members/login")
+            .defaultSuccessUrl("/")
+            .usernameParameter("email")
+            .failureUrl("/members/login/error")
+            .and()
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher
+                ("/members/logout"))
+            .logoutSuccessUrl("/")
         ;
         http.authorizeRequests()
-                .mvcMatchers("/","/members/**","/item/**","/images/**").permitAll()
-                .mvcMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                ;
+            .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
+            .mvcMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        ;
         http.exceptionHandling()
-                .authenticationEntryPoint(
-                        new CustomAuthenticationEntryPoint());
+            .authenticationEntryPoint(
+                new CustomAuthenticationEntryPoint());
     }
 
 
     @Override
-    public void configure(WebSecurity web) throws Exception{
-        web.ignoring().antMatchers("/css/**","/js/**","/img/**");
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/css/**", "/static/js/**", "/static/img/**");
     }
 
 }
