@@ -25,21 +25,26 @@
         });
     </script>
 
-    <script th:inline="javascript">
-    function test() {
-      var p1 = document.getElementById('pw1').value;
-      var p2 = document.getElementById('pw2').value;
-      if( p1 != p2 ) {
-        alert("비밀번호가 일치 하지 않습니다");
-        return false;
-      } else{
-        alert("비밀번호가 일치합니다");
-        return true;
-      }
+</th:block>
 
-    }
-  </script>
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        $(function () {
+            $('#pwcheck').click((e) => {
 
+                const password = $('#pw').val();
+                const confirmPassword = $('#pwchk').val()
+
+                if (password != confirmPassword) {
+                    alert('비밀번호가 일치하지 않습니다.');
+
+                } else {
+                  alert('비밀번호가 일치합니다.');
+                  e.preventDefault();
+                }
+            });
+        });
+    </script>
 </th:block>
 
 <div layout:fragment="content">
@@ -51,55 +56,44 @@
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect data</p>
         </div>
         <div class="form-group">
+            <label th:for="email">이메일주소</label>
+            <input type="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
+        </div>
+<!--        <div class="form-group">-->
+<!--            <label th:for="email">이메일 인증번호</label>-->
+<!--            <input type="email" th:field="*{email}" class="form-control" placeholder="인증번호 입력해주세요">-->
+<!--            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <button id="emailcheck" type="submit" class="btn btn-primary" style="" th:href="@{login/mailConfirm}">이메일 확인</button>-->
+<!--        </div>-->
+        <div class="form-group">
             <label th:for="phone">전화번호</label>
             <input type="text" th:field="*{phone}" class="form-control" placeholder="전화번호를 입력해주세요">
             <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="fieldError">Incorrect data</p>
         </div>
         <div class="form-group">
-            <label th:for="email">이메일주소</label>
-            <input type="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요">
-            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
-<!--            <button id="sendMail">인증번호 받기</button> <br>-->
-
-<!--            <input type="emailcheck"  class="form-control" placeholder="인증번호 입력해주세요">-->
-<!--            <button th:action="@{/mail}" id="certification">인증 하기</button>-->
-<!--            <br>-->
-<!--            <input type="hidden" id="certificationYN" value="false">-->
-        </div>
-        <div class="form-group">
             <label th:for="password">비밀번호</label>
-            <input id="pw1" type="password" th:field="*{password}" class="form-control" placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.">
+            <input id="pw" type="password" th:field="*{password}" class="form-control" placeholder="비밀번호 입력">
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
-            <input type="button" onclick="test()" value="비밀번호 확인"><br>
         </div>
         <div class="form-group">
             <label th:for="password">비밀번호 확인</label>
-            <input id="pw2" type="password"  class="form-control" placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.">
-
+            <input id="pwchk" type="password" class="form-control" placeholder="비밀번호 확인 입력" required>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+        <button id="pwcheck" type="submit" class="btn btn-primary" style="">비밀번호 확인</button>
         </div>
         <div class="form-group">
             <label th:for="address">주소</label>
             <input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요">
             <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
         </div>
-        <div>
-        <strong>약관동의</strong>
-        <br>
-        <input type="checkbox" required>만 19세 이상입니다. (필수)
-        <br>
-        <input type="checkbox" required>
-        <a href="https://ohou.se/usepolicy" >이용약관(필수)</a>
-        <br>
-        <input type="checkbox" required>
-        <a href="https://ohou.se/privacy?type=register" >개인정보수집 및 이용동의(필수)</a>
-        <br>
-        <input type="checkbox">
-        <a href="https://ohou.se/privacy?type=register_marketing">이벤트, 쿠폰,특가알림 메일 및 SMS 등 수신 (선택)</a>
-        </div>
-            <br>
-        <br>
+
         <div style="text-align: center">
-            <button type="submit" class="btn btn-primary" style="">회원가입</button>
+            <button type="submit" class="btn btn-primary" style="">Submit</button>
         </div>
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>

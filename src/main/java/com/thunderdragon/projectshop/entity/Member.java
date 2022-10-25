@@ -24,15 +24,15 @@ public class Member extends BaseEntity{
 
     private String name;
 
-    private String address;
+    @Column(unique = true)
+    private String email;
 
     @Column(unique = true)
     private String phone;
 
-    @Column(unique = true)
-    private String email;
-
     private String password;
+
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -40,9 +40,9 @@ public class Member extends BaseEntity{
     public static Member createMember (MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
         member.setName(memberFormDto.getName());
-        member.setAddress(memberFormDto.getAddress());
-        member.setPhone(memberFormDto.getPhone());
         member.setEmail(memberFormDto.getEmail());
+        member.setPhone(memberFormDto.getPhone());
+        member.setAddress(memberFormDto.getAddress());
         String password=passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
         member.setRole(Role.ADMIN);
