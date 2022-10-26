@@ -1,9 +1,10 @@
 package com.thunderdragon.projectshop.controller;
 
-import com.thunderdragon.projectshop.dto.ItemFormDto;
-import com.thunderdragon.projectshop.dto.ItemSearchDto;
-import com.thunderdragon.projectshop.entity.Item;
-import com.thunderdragon.projectshop.service.ItemService;
+import  com.thunderdragon.projectshop.dto.ItemFormDto;
+import  com.thunderdragon.projectshop.dto.ItemSearchDto;
+import  com.thunderdragon.projectshop.entity.Item;
+import  com.thunderdragon.projectshop.service.ItemService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -78,7 +76,7 @@ public class ItemController {
             return "item/itemForm";
         }
         try {
-           itemService.updateItem(itemFormDto,itemImgFileList);
+            itemService.updateItem(itemFormDto,itemImgFileList);
         } catch (Exception e) {
             model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
             return "item/itemForm";
@@ -93,14 +91,19 @@ public class ItemController {
         model.addAttribute("items",items);
         model.addAttribute("itemSearchDto",itemSearchDto);
         model.addAttribute("maxPage",5);
-        return "item/itemMng";
+        return "/item/itemMng";
     }
     @GetMapping(value = "/item/{itemId}")
     public String itemDtl(Model model ,@PathVariable("itemId") Long itemId) {
-
-            ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
-            model.addAttribute("item",itemFormDto);
-            return "item/itemDtl";
+        ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+        model.addAttribute("item",itemFormDto);
+        return "item/itemDtl";
 
     }
+//    @RequestMapping(value = "/item", method = RequestMethod.GET)
+//    public String list(Model model ) throws Exception {
+//        model.addAttribute("list", itemService.list());
+//        return "itemList";
+//
+//    }
 }

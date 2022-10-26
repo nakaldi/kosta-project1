@@ -1,8 +1,10 @@
 package com.thunderdragon.projectshop.service;
 
+import com.thunderdragon.projectshop.entity.Board;
 import com.thunderdragon.projectshop.entity.Member;
 import com.thunderdragon.projectshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -41,4 +44,10 @@ public class MemberService implements UserDetailsService {
                 .roles(member.getRole().toString())
                 .build();
     }
+//    @Override
+    public List<Member> list() throws Exception {
+        return memberRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+    }
+
+
 }

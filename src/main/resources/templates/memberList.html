@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 스크립트 추가 -->
+
+
+<div layout:fragment="content">
+
+  <form th:action="@{/members}" role="form" method="get" th:object="${member}">
+    <table class="table">
+      <thead>
+      <tr>
+        <td align="center">회원ID.</td>
+        <td align="left">이름</td>
+        <td align="right">이메일</td>
+        <td align="center">전화번호</td>
+        <td align="center">주소</td>
+        <td align="center">권한</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="member: ${list}">
+        <td align="center" th:text="${member.id}">${member.id}</td>
+        <td align="left" th:text="${member.name}">${member.name}</td>
+        <td align="right" th:text="${member.email}">${board.email}</td>
+        <td align="center" th:text="${member.phone}">${member.phone}</td>
+        <td align="center" th:text="${member.address}">${member.address}</td>
+        <td align="center" th:text="${member.role}">${member.role}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </form>
+
+</div>
+
+</html>

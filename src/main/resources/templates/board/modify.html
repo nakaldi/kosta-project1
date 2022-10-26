@@ -6,6 +6,17 @@
 <head>
     <title>Board</title>
 </head>
+<th:block layout:fragment="css">
+    <style>
+        .regBox{
+        width:50%;
+        margin-bottom:10px;
+        }
+        .regTextBox{
+        width:100%;
+        }
+    </style>
+</th:block>
 <th:block layout:fragment="script">
 <script src="/js/jQuery-2.1.4.min.js"></script>
 </th:block>
@@ -32,31 +43,33 @@
 <div layout:fragment="content">
 <h2>MODIFY</h2>
 
-<form action="success.html" th:action="@{modify}" th:object="${board}" method="POST">
+<form id="board" role="form"  th:action="@{modify}" th:object="${board}" method="POST"     action="success.html">
     <input type="hidden" name="boardNo" th:field="*{boardNo}" />
 
-    <table>
+    <table id="table">
         <tr>
             <td>Title</td>
-            <td><input type="text" name="title"  th:field="*{title}" /></td>
-            <td><font color="red"><span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title의 에러 메시지</span></font></td>
+            <td ><input class="regBox" type="text" name="title"  th:field="*{title}" /></td>
+            <td ><span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;">title의 에러 메시지</span></td>
         </tr>
+
         <tr>
             <td>Writer</td>
-            <td><input type="text" name="writer" th:field="*{writer}" /></td>
-            <td><font color="red"><span th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">writer의 에러 메시지</span></font></td>
+            <td ><input class="regBox" type="text" name="writer" th:field="*{writer}" /></td>
+            <td ><span th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}" style="color:red;">writer의 에러 메시지</span></td>
         </tr>
+
         <tr>
             <td>Content</td>
-            <td><textarea name="content"  th:field="*{content}"></textarea></td>
-            <td><font color="red"><span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content의 에러 메시지</span></font></td>
+            <td ><textarea class="regTextBox" name="content"  th:field="*{content}"></textarea></td>
+            <td><span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color:red;">content의 에러 메시지</span></td>
         </tr>
     </table>
 </form>
 
 <div>
-    <button type="submit" id="btnModify">Modify</button>
-    <button type="submit" id="btnList">List</button>
+    <button type="submit" class="btn btn-primary"  id="btnModify">수정 완료</button>
+    <button type="submit" class="btn btn-primary"  id="btnList">리스트로 돌아가기</button>
 </div>
 </div>
 </body>

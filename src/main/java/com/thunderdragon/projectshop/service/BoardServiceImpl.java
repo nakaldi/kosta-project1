@@ -4,44 +4,53 @@ import com.thunderdragon.projectshop.entity.Board;
 import com.thunderdragon.projectshop.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+
 @Service
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
 
     @Autowired
-    private  BoardRepository boardRepository;
-
+    private BoardRepository repository;
 
     @Override
+    @Transactional
     public void register(Board board) throws Exception {
-        boardRepository.save(board);
+        repository.save(board);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Board read(Integer boardNo) throws Exception {
-        return boardRepository.findById(boardNo)
-                .orElseThrow(EntityNotFoundException::new);
+        return repository.findById(boardNo).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
+    @Transactional
     public void modify(Board board) throws Exception {
-     Board boardEntity =boardRepository.findById(board.getBoardNo())
-             .orElseThrow(EntityNotFoundException::new);
-     boardEntity.setTitle(board.getTitle());
+
+        Board boardEntity = repository.findById(board.getBoardNo()).orElseThrow(EntityNotFoundException::new);
+
+        boardEntity.setTitle(board.getTitle());
+        boardEntity.setWriter(board.getWriter());
+        boardEntity.setContent(board.getContent());
     }
 
     @Override
+    @Transactional
     public void remove(Integer boardNo) throws Exception {
-    boardRepository.deleteById(boardNo);
+//        repository.delete(boardNo);
+        repository.deleteById(boardNo);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Board> list() throws Exception {
-        return boardRepository.findAll(Sort.by(Sort.Direction.DESC,"boardNo"));
+        return repository.findAll(Sort.by(Direction.DESC, "boardNo"));
     }
 }

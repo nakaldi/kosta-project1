@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/","/members/**","/item/**","/images/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                ;
+        ;
         http.exceptionHandling()
                 .authenticationEntryPoint(
                         new CustomAuthenticationEntryPoint());
@@ -56,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception{
-        web.ignoring().antMatchers("/css/**","/js/**","/img/**");
+//        web.ignoring().antMatchers("/css/**","/js/**","/img/**","/lib/**","/mail/**");
+        web.ignoring().antMatchers("/css/**","/js/**","/img/**","/lib/**");
     }
-
+//,"/scss/**","/images/**"
 }

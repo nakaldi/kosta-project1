@@ -7,6 +7,7 @@
 <th:block layout:fragment="script">
     <script th:inline="javascript">
 
+
         $(document).ready(function(){
             $("#searchBtn").on("click",function(e) {
                 e.preventDefault();
@@ -47,6 +48,7 @@
                 <td>상품아이디</td>
                 <td>상품명</td>
                 <td>상태</td>
+                <td>재고수량</td>
                 <td>등록자</td>
                 <td>등록일</td>
             </tr>
@@ -57,9 +59,10 @@
                 <td>
                     <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}"></a>
                 </td>
-                <td th:text="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
+                <td th:text="${item.itemSellStatus == T(com.thunderdragon.projectshop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
+                <td th:text="${item.stockNumber}"></td>
                 <td th:text="${item.createdBy}"></td>
-                <td th:text="${item.regTime}"></td>
+                <td th:text="${#temporals.format(item.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             </tbody>
         </table>

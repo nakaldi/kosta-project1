@@ -1,35 +1,37 @@
+
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 
-<head>
-    <title>Board</title>
-</head>
-<body>
+<!-- 사용자 스크립트 추가 -->
+
+
 <div layout:fragment="content">
-    <h2>List</h2>
-    <a href="register.html" th:href="@{board/register}">New</a>
-    <table border="1">
-        <tr>
-            <th align="center" width="80">NO</th>
-            <th align="center" width="320">TITLE</th>
-            <th align="center" width="100">WRITER</th>
-            <th align="center" width="180">REGTIME</th>
-        </tr>
 
-        <tr th:if="${#lists.isEmpty(list)}">
-            <td colspan="4">
-                List is empty.
-            </td>
-        </tr>
+    <form th:action="@{/board}" role="form" method="get" th:object="${board}">
+        <table class="table">
+            <thead>
+            <tr>
+                <td align="center">No.</td>
+                <td align="left">제목</td>
+                <td align="right">작성자</td>
+                <td align="center">등록시간</td>
 
-        <tr th:each="board : ${list}">
-            <td align="center" th:text="${board.boardNo}">${board.boardNo}</td>
-            <td align="left"><a href="read.html" th:href="@{|board/read?boardNo=${board.boardNo}|}" th:text="${board.title}">${board.title}</a></td>
-            <td align="right" th:text="${board.writer}">${board.writer}</td>
-            <td align="center" th:text="${board.regTime}">${board.regTime}</td>
-        </tr>
-    </table>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board: ${list}">
+                <td align="center" th:text="${board.boardNo}">${board.boardNo}</td>
+                <td align="left"><a href="read.html" th:href="@{|board/read?boardNo=${board.boardNo}|}" th:text="${board.title}">${board.title}</a></td>
+                <td align="right" th:text="${board.writer}">${board.writer}</td>
+                <td align="center" th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}">${board.regTime}</td>
+            </tr>
+            </tbody>
+        </table>
+        <button ><a href="register.html" th:href="@{board/register}">등록하기</a></button>
+    </form>
+
 </div>
-</body>
+
 </html>
